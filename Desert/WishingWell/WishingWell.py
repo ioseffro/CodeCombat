@@ -6,33 +6,39 @@ less = "Nimis"
 more = "Non satis"
 requiredGold = 104
 
-
-# This function calculates the sum of coin values.
+# This function calculates the sum of all coin values.
 def sumCoinValues(coins):
-    i = 0
-    total = 0
-    while i < len(coins):
-        total += coins[i].value
-        i += 1
-    return total
+    coinIndex = 0
+    totalValue = 0
+    # Iterate all coins.
+    while coinIndex < len(coins):
+        totalValue += coins[coinIndex].value
+        coinIndex += 1
+    return totalValue
 
+def collectAllCoins():
+    item = hero.findNearest(hero.findItems())
+    while item:
+        hero.moveXY(item.pos.x, item.pos.y)
+        item = hero.findNearest(hero.findItems())
 
 while True:
     items = hero.findItems()
+    # Get the total value of coins.
     goldAmount = sumCoinValues(items)
-    if len(items) != 0:
-        # If there is not enough gold, then say "Non satis".
-        if goldAmount > 104:
-            # If there is too much gold, then say "Nimis".
-            hero.say(less)
-        # If there is exactly 104 gold, then collect all coins.
-        if goldAmount < 104:
-            hero.say(more)
+    # If there are coins, then goldAmount isn't zero.
+    if goldAmount != 0:
+        # If goldAmount is less than requiredGold
+        if (goldAmount < requiredGold):
+            # Then say "Non satis".
+            hero.say("Non satis");
+        # If goldAmount is greater than requiredGold
+        if (goldAmount > requiredGold):
+            # Then say "Nimis".
+            hero.say("Nimis");
+        # If goldAmount is exactly equal to requiredGold
+        if (goldAmount == requiredGold):
+            collectAllCoins();
+            # Then collect all coins:
+
         pass
-        if goldAmount == 104:
-            break
-while True:
-    items = hero.findItems()
-    item = hero.findNearest(items)
-    if item:
-        hero.move(item.pos)
